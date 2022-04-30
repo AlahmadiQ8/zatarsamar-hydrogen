@@ -10,7 +10,7 @@ import gql from 'graphql-tag';
 
 import Layout from '../components/Layout.server';
 import FeaturedCollection from '../components/FeaturedCollection';
-import ProductCard from '../components/ProductCard';
+import {ProductList} from '../components/ProductList';
 import Welcome from '../components/Welcome.server';
 import {Suspense} from 'react';
 
@@ -94,13 +94,7 @@ function FeaturedProductsBox({country}) {
               </Link>
             </span>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
-            {featuredProducts.map((product) => (
-              <div key={product.id}>
-                <ProductCard product={product} />
-              </div>
-            ))}
-          </div>
+          <ProductList products={featuredProducts} />
           <div className="md:hidden text-center">
             <Link
               to={`/collections/${featuredProductsCollection.handle}`}
@@ -216,15 +210,123 @@ const QUERY = gql`
           products(first: 3) {
             edges {
               node {
+                compareAtPriceRange {
+                  maxVariantPrice {
+                    currencyCode
+                    amount
+                  }
+                  minVariantPrice {
+                    currencyCode
+                    amount
+                  }
+                }
+                description
+                descriptionHtml
+                featuredImage {
+                  url
+                  width
+                  height
+                  altText
+                }
                 handle
                 id
-                title
-                variants(first: 1) {
+                media(first: 1) {
+                  edges {
+                    node {
+                      ... on MediaImage {
+                        mediaContentType
+                        image {
+                          id
+                          url
+                          altText
+                          width
+                          height
+                        }
+                      }
+                      ... on Video {
+                        mediaContentType
+                        id
+                        previewImage {
+                          url
+                        }
+                        sources {
+                          mimeType
+                          url
+                        }
+                      }
+                      ... on ExternalVideo {
+                        mediaContentType
+                        id
+                        embedUrl
+                        host
+                      }
+                      ... on Model3d {
+                        mediaContentType
+                        id
+                        alt
+                        mediaContentType
+                        previewImage {
+                          url
+                        }
+                        sources {
+                          url
+                        }
+                      }
+                    }
+                  }
+                }
+                metafields(first: 20) {
                   edges {
                     node {
                       id
-                      title
+                      type
+                      namespace
+                      key
+                      value
+                      createdAt
+                      updatedAt
+                      description
+                      reference {
+                        __typename
+                        ... on MediaImage {
+                          id
+                          mediaContentType
+                          image {
+                            id
+                            url
+                            altText
+                            width
+                            height
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+                priceRange {
+                  maxVariantPrice {
+                    currencyCode
+                    amount
+                  }
+                  minVariantPrice {
+                    currencyCode
+                    amount
+                  }
+                }
+                seo {
+                  description
+                  title
+                }
+                title
+                variants(first: 2) {
+                  edges {
+                    node {
                       availableForSale
+                      compareAtPriceV2 {
+                        amount
+                        currencyCode
+                      }
+                      id
                       image {
                         id
                         url
@@ -232,17 +334,59 @@ const QUERY = gql`
                         width
                         height
                       }
-                      priceV2 {
-                        currencyCode
-                        amount
+                      metafields(first: 10) {
+                        edges {
+                          node {
+                            id
+                            type
+                            namespace
+                            key
+                            value
+                            createdAt
+                            updatedAt
+                            description
+                            reference {
+                              __typename
+                              ... on MediaImage {
+                                id
+                                mediaContentType
+                                image {
+                                  id
+                                  url
+                                  altText
+                                  width
+                                  height
+                                }
+                              }
+                            }
+                          }
+                        }
                       }
-                      compareAtPriceV2 {
-                        currencyCode
+                      priceV2 {
                         amount
+                        currencyCode
+                      }
+                      selectedOptions {
+                        name
+                        value
+                      }
+                      sku
+                      title
+                      unitPrice {
+                        amount
+                        currencyCode
+                      }
+                      unitPriceMeasurement {
+                        measuredType
+                        quantityUnit
+                        quantityValue
+                        referenceUnit
+                        referenceValue
                       }
                     }
                   }
                 }
+                vendor
               }
             }
           }

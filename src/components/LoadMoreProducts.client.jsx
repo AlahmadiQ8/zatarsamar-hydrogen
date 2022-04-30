@@ -5,7 +5,7 @@ import SpinnerIcon from './SpinnerIcon.client';
  * A client component that provides functionality to initially show a subset of products and a button to load more products
  */
 export default function LoadMoreProducts({startingCount}) {
-  const {pending, serverProps, setServerProps} = useServerProps();
+  const {pending, setServerProps} = useServerProps();
 
   return (
     <div className="flex justify-center h-14">
@@ -19,12 +19,7 @@ export default function LoadMoreProducts({startingCount}) {
             pending ? 'opacity-50' : undefined
           }`}
           onClick={() => {
-            setServerProps(
-              'collectionProductCount',
-              serverProps.collectionProductCount
-                ? serverProps.collectionProductCount + 24
-                : startingCount + 1,
-            );
+            setServerProps('collectionProductCount', startingCount + 10);
           }}
         >
           Load more
