@@ -8,13 +8,13 @@ import {
 } from '@shopify/hydrogen';
 import gql from 'graphql-tag';
 
-import Layout from '../components/Layout.server';
+import {Layout} from '../components/Layout.server';
 import FeaturedCollection from '../components/FeaturedCollection';
 import {ProductList} from '../components/ProductList';
 import Welcome from '../components/Welcome.server';
 import {Suspense} from 'react';
 
-export default function Index({country = {isoCode: 'US'}}) {
+export default function Index({country = {isoCode: 'KW'}}) {
   return (
     <Layout hero={<GradientBackground />}>
       <Suspense fallback={null}>

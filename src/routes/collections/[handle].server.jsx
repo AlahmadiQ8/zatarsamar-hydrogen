@@ -2,9 +2,9 @@ import {useShop, useShopQuery, flattenConnection, Seo} from '@shopify/hydrogen';
 import gql from 'graphql-tag';
 
 import LoadMoreProducts from '../../components/LoadMoreProducts.client';
-import Layout from '../../components/Layout.server';
+import {Layout} from '../../components/Layout.server';
 import {ProductList} from '../../components/ProductList';
-import NotFound from '../../components/NotFound.server';
+import {NotFound} from '../../components/NotFound.server';
 
 export default function Collection({
   country = {isoCode: 'US'},

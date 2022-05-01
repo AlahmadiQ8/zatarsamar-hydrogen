@@ -1,7 +1,7 @@
 import {useShop, useShopQuery, flattenConnection} from '@shopify/hydrogen';
 import gql from 'graphql-tag';
 
-import Layout from './Layout.server';
+import {Layout} from './Layout.server';
 import Button from './Button.client';
 import {ProductCard} from './ProductCard';
 
@@ -29,7 +29,7 @@ function NotFoundHero() {
   );
 }
 
-export default function NotFound({country = {isoCode: 'US'}, response}) {
+export function NotFound({country = {isoCode: 'US'}, response}) {
   if (response) {
     response.doNotStream();
     response.writeHead({status: 404, statusText: 'Not found'});
@@ -74,6 +74,34 @@ const QUERY = gql`
           handle
           id
           title
+          metafields(first: 20) {
+            edges {
+              node {
+                id
+                type
+                namespace
+                key
+                value
+                createdAt
+                updatedAt
+                description
+                reference {
+                  __typename
+                  ... on MediaImage {
+                    id
+                    mediaContentType
+                    image {
+                      id
+                      url
+                      altText
+                      width
+                      height
+                    }
+                  }
+                }
+              }
+            }
+          }
           variants(first: 1) {
             edges {
               node {
@@ -94,6 +122,38 @@ const QUERY = gql`
                 compareAtPriceV2 {
                   currencyCode
                   amount
+                }
+                selectedOptions {
+                  name
+                  value
+                }
+                metafields(first: 10) {
+                  edges {
+                    node {
+                      id
+                      type
+                      namespace
+                      key
+                      value
+                      createdAt
+                      updatedAt
+                      description
+                      reference {
+                        __typename
+                        ... on MediaImage {
+                          id
+                          mediaContentType
+                          image {
+                            id
+                            url
+                            altText
+                            width
+                            height
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }

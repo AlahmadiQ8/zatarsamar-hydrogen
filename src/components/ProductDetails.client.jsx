@@ -108,7 +108,7 @@ function ProductPrices() {
   );
 }
 
-export default function ProductDetails({product}) {
+export function ProductDetails({product}) {
   const initialVariant = flattenConnection(product.variants)[0];
 
   const productMetafields = useParsedMetafields(product.metafields);

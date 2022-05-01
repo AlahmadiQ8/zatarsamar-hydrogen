@@ -1,5 +1,10 @@
 # Hydrogen App
 
+It is not obvious how to know what are the required fields needed in a query to render a hydrogen component: 
+* examples: product provider, useparsedmetafields, selected options etc
+* not enough tracing for troubleshooting and drilling down. for example, if a hydrogen component throws an error, stack trace does not include which file in src exception was thrown. 
+
+
 Hydrogen is a React framework and SDK that you can use to build fast and dynamic Shopify custom storefronts.
 
 [Check out the docs](https://shopify.dev/custom-storefronts/hydrogen)

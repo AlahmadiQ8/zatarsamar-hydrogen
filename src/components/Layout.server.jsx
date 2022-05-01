@@ -15,7 +15,7 @@ import {Suspense} from 'react';
 /**
  * A server component that defines a structure and organization of a page that can be used in different parts of the Hydrogen app
  */
-export default function Layout({children, hero}) {
+export function Layout({children, hero}) {
   const {languageCode} = useShop();
 
   const {data} = useShopQuery({
