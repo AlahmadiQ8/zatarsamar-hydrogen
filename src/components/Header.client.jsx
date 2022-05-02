@@ -1,29 +1,9 @@
-import {useEffect, useState} from 'react';
-import {Link} from '@shopify/hydrogen/client';
-
-import CartToggle from './CartToggle.client';
-import {useCartUI} from './CartUIProvider.client';
-import CountrySelector from './CountrySelector.client';
-import Navigation from './Navigation.client';
-import MobileNavigation from './MobileNavigation.client';
-
-import { Header2 } from './Header2.client';
+import {Header2} from './Header2.client';
 
 /**
  * A client component that specifies the content of the header on the website
  */
-export default function Header({collections, storeName}) {
-  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
-  const [scrollbarWidth, setScrollbarWidth] = useState(0);
-  const {isCartOpen} = useCartUI();
-
-  useEffect(() => {
-    const scrollbarWidth =
-      window.innerWidth - document.documentElement.clientWidth;
-
-    setScrollbarWidth(scrollbarWidth);
-  }, [isCartOpen]);
-
+export default function Header() {
   return (
     <Header2 />
     // <header className="h-20 lg:h-32" role="banner">

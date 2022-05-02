@@ -1,12 +1,15 @@
 /* This example requires Tailwind CSS v2.0+ */
-import {CartIcon} from './CartIcon';
+import {useCart} from '@shopify/hydrogen/client';
 import {Image, Link} from '@shopify/hydrogen/client';
+import {CartIcon} from './CartIcon';
 import ZatarSamarLogo from '../assets/zatarsamar-logo.png';
 import {translations} from '../translations';
 
 export function Header2() {
+  const {totalQuantity} = useCart();
+
   return (
-    <header className="relative bg-white">
+    <header className=" bg-white fixed top-0 left-0 right-0 z-10">
       <nav aria-label="Top" className="max-w-7xl mx-auto sm:px-6 lg:px-8">
         {/* TODO: NEEDED when we have menus */}
         {/* <div className="border-b border-gray-200 px-4 pb-14 sm:px-0 sm:pb-0"> */}
@@ -54,7 +57,7 @@ export function Header2() {
                     aria-hidden="true"
                   />
                   <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                    0
+                    {totalQuantity}
                   </span>
                   <span className="sr-only">items in cart, view bag</span>
                 </a>

@@ -9,7 +9,6 @@ import gql from 'graphql-tag';
 
 import Header from './Header.client';
 import Footer from './Footer.server';
-import Cart from './Cart.client';
 import {Suspense} from 'react';
 
 /**
@@ -45,7 +44,6 @@ export function Layout({children, hero}) {
         {/* TODO: Find out why Suspense needs to be here to prevent hydration errors. */}
         <Suspense fallback={null}>
           <Header collections={collections} storeName={storeName} />
-          <Cart />
         </Suspense>
         <main role="main" id="mainContent" className="relative bg-gray-50">
           {hero}
