@@ -1,5 +1,6 @@
 /**
  * A shared component that specifies the icon to represent a cart
+ * TODO: Remove this in favor of import {ShoppingBagIcon} from '@heroicons/react/outline';
  */
 export function CartIcon() {
   return (
