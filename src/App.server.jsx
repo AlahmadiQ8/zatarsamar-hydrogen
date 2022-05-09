@@ -11,7 +11,7 @@ import {Suspense} from 'react';
 import shopifyConfig from '../shopify.config';
 import DefaultSeo from './components/DefaultSeo.server';
 import {NotFound} from './components/NotFound.server';
-import LoadingFallback from './components/LoadingFallback';
+import {LoadingFallback} from './components/LoadingFallback';
 
 function App({routes}) {
   return (

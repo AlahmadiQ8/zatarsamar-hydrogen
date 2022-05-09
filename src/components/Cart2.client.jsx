@@ -8,10 +8,15 @@ import {
   CartLineQuantityAdjustButton,
 } from '@shopify/hydrogen/client';
 import {BUTTON_PRIMARY_CLASSES} from './Button.client';
+import {LoadingFallback} from './LoadingFallback';
 import {QuestionMarkCircleIcon, XIcon} from '@heroicons/react/solid';
 
 export function Cart2() {
-  const {totalQuantity, lines} = useCart();
+  const {totalQuantity, lines, linesUpdate, status} = useCart();
+
+  if (status == 'fetching' || status == 'uninitialized') {
+    return <LoadingFallback />;
+  }
 
   if (totalQuantity == 0) {
     return <CartEmpty />;
@@ -77,6 +82,14 @@ export function Cart2() {
                           <select
                             id={`quantity-${line.id}`}
                             name={`quantity-${line.id}`}
+                            onChange={(e) =>
+                              linesUpdate([
+                                {
+                                  id: line.id,
+                                  quantity: parseInt(e.target.value),
+                                },
+                              ])
+                            }
                             className="max-w-full rounded-md border border-gray-300 py-1.5 text-base leading-5 font-medium text-gray-700 rtl:text-right ltr:text-left shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                           >
                             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((quantity) => (
