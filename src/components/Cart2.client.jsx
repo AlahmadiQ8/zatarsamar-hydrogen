@@ -6,10 +6,12 @@ import {
   CartLineProductTitle,
   CartLinePrice,
   CartLineQuantityAdjustButton,
+  CartEstimatedCost,
 } from '@shopify/hydrogen/client';
 import {BUTTON_PRIMARY_CLASSES} from './Button.client';
 import {LoadingFallback} from './LoadingFallback';
-import {QuestionMarkCircleIcon, XIcon} from '@heroicons/react/solid';
+import {XIcon} from '@heroicons/react/solid';
+import {translations} from '../translations';
 
 export function Cart2() {
   const {totalQuantity, lines, linesUpdate, status} = useCart();
@@ -25,7 +27,7 @@ export function Cart2() {
   return (
     <div className="max-w-2xl mx-auto pt-20 pb-24 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
       <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-        Shopping Cart
+        {translations.shoppingCart.ar}
       </h1>
       <form className="mt-12 lg:grid lg:grid-cols-12 lg:gap-x-12 lg:items-start xl:gap-x-16">
         <section aria-labelledby="cart-heading" className="lg:col-span-7">
@@ -155,55 +157,33 @@ export function Cart2() {
             id="summary-heading"
             className="text-lg font-medium text-gray-900"
           >
-            Order summary
+            {translations.orderSummary.ar}
           </h2>
 
           <dl className="mt-6 space-y-4">
             <div className="flex items-center justify-between">
-              <dt className="text-sm text-gray-600">Subtotal</dt>
-              <dd className="text-sm font-medium text-gray-900">$99.00</dd>
+              <dt className="text-sm text-gray-600">
+                {translations.subtotal.ar}
+              </dt>
+              <dd className="text-sm font-medium text-gray-900">
+                <CartEstimatedCost amountType="subtotal" />
+              </dd>
             </div>
             <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
               <dt className="flex items-center text-sm text-gray-600">
-                <span>Shipping estimate</span>
-                <a
-                  href="#"
-                  className="rtl:mr-2 ltr:ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500"
-                >
-                  <span className="sr-only">
-                    Learn more about how shipping is calculated
-                  </span>
-                  <QuestionMarkCircleIcon
-                    className="h-5 w-5"
-                    aria-hidden="true"
-                  />
-                </a>
+                {translations.shipping.ar}
               </dt>
-              <dd className="text-sm font-medium text-gray-900">$5.00</dd>
-            </div>
-            <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
-              <dt className="flex text-sm text-gray-600">
-                <span>Tax estimate</span>
-                <a
-                  href="#"
-                  className="rtl:mr-2 ltr:ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500"
-                >
-                  <span className="sr-only">
-                    Learn more about how tax is calculated
-                  </span>
-                  <QuestionMarkCircleIcon
-                    className="h-5 w-5"
-                    aria-hidden="true"
-                  />
-                </a>
-              </dt>
-              <dd className="text-sm font-medium text-gray-900">$8.32</dd>
+              <dd className="text-sm text-gray-500">
+                {translations.calculatedAtNextStep.ar}
+              </dd>
             </div>
             <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
               <dt className="text-base font-medium text-gray-900">
-                Order total
+                {translations.orderTotal.ar}
               </dt>
-              <dd className="text-base font-medium text-gray-900">$112.32</dd>
+              <dd className="text-base font-medium text-gray-900">
+                <CartEstimatedCost amountType="total" />
+              </dd>
             </div>
           </dl>
 
@@ -212,7 +192,7 @@ export function Cart2() {
               type="submit"
               className="w-full bg-indigo-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
             >
-              Checkout
+              {translations.checkout.ar}
             </button>
           </div>
         </section>
