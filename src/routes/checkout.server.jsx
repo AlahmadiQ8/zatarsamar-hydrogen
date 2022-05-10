@@ -1,10 +1,9 @@
 import {Suspense} from 'react';
-
 import {Layout} from '../components/Layout.server';
-import {Cart2} from '../components/Cart2.client';
+import {CheckoutForm} from '../components/CheckoutForm.client';
 import {translations} from '../translations';
 
-export default function Cart() {
+export default function Checkout() {
   return (
     <Layout>
       <Suspense fallback={null}>
@@ -12,7 +11,7 @@ export default function Cart() {
           <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
             {translations.shoppingCart.ar}
           </h1>
-          <Cart2 />
+          <CheckoutForm />
         </div>
       </Suspense>
     </Layout>
