@@ -27,8 +27,13 @@ export const translations = {
     value: 'Calculated at next step',
     ar: 'ستحسب حسب المنطقة'
   },
+  nextStep: {
+    value: 'Next Step',
+    ar: 'الخطوة التالية'
+  },
   checkout: {
     value: 'Checkout', 
-    ar: 'متابعة'
-  }
+    ar: 'معلومات العميل'
+  },
+  
 }

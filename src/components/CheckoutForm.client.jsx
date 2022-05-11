@@ -325,7 +325,7 @@ export function CheckoutForm() {
 
           <fieldset className="mt-4">
             <legend className="sr-only">Payment type</legend>
-            <div className="space-y-4 sm:flex sm:items-center sm:space-y-0 sm:space-x-10">
+            <div className="space-y-4 sm:grid sm:grid-flow-col sm:auto-cols-max sm:gap-x-10 sm:space-y-0">
               {paymentMethods.map((paymentMethod, paymentMethodIdx) => (
                 <div key={paymentMethod.id} className="flex items-center">
                   {paymentMethodIdx === 0 ? (
@@ -347,7 +347,7 @@ export function CheckoutForm() {
 
                   <label
                     htmlFor={paymentMethod.id}
-                    className="ml-3 block text-sm font-medium text-gray-700"
+                    className="rtl:mr-3 ltr:ml-3 block text-sm font-medium text-gray-700"
                   >
                     {paymentMethod.title}
                   </label>
@@ -449,7 +449,7 @@ export function CheckoutForm() {
                   />
                 </div>
 
-                <div className="ml-6 flex-1 flex flex-col">
+                <div className="rtl:mr-6 ltr:ml-6 flex-1 flex flex-col">
                   <div className="flex">
                     <div className="min-w-0 flex-1">
                       <h4 className="text-sm">
@@ -468,7 +468,7 @@ export function CheckoutForm() {
                       </p>
                     </div>
 
-                    <div className="ml-4 flex-shrink-0 flow-root">
+                    <div className="rtl:mr-4 ltr:ml-4 flex-shrink-0 flow-root">
                       <button
                         type="button"
                         className="-m-2.5 bg-white p-2.5 flex items-center justify-center text-gray-400 hover:text-gray-500"
@@ -484,7 +484,7 @@ export function CheckoutForm() {
                       {product.price}
                     </p>
 
-                    <div className="ml-4">
+                    <div className="rtl:mr-4 ltr:ml-4">
                       <label htmlFor="quantity" className="sr-only">
                         Quantity
                       </label>
