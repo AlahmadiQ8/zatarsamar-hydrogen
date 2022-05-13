@@ -1,12 +1,21 @@
 import {useState} from 'react';
 import {RadioGroup} from '@headlessui/react';
 import {
+  Link,
+  useCart,
+  CartLineProvider,
+  CartLineImage,
+  CartLineProductTitle,
+  CartLinePrice,
+  CartLineQuantityAdjustButton,
+  CartEstimatedCost,
+} from '@shopify/hydrogen/client';
+import {
   CheckCircleIcon,
   TrashIcon,
   LocationMarkerIcon,
 } from '@heroicons/react/solid';
 import {translations} from '../translations';
-import {Link} from '@shopify/hydrogen/client';
 import {MoneyLocalized} from './MoneyLocalized';
 
 const paymentMethods = [
@@ -61,6 +70,8 @@ export function CheckoutForm() {
 
   const [currentCustomerInfo, setCurrrentCustomerInfo] = useState(customerInfo);
 
+  const {totalQuantity, lines, linesUpdate, status} = useCart();
+
   const recipientOnChange = (e) => {
     setCurrrentCustomerInfo({
       ...currentCustomerInfo,
@@ -90,8 +101,6 @@ export function CheckoutForm() {
       paymentMethod: e.target.value,
     });
   };
-
-  console.log(currentCustomerInfo);
 
   return (
     <form className="mt-12 lg:grid lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16">
@@ -291,110 +300,7 @@ export function CheckoutForm() {
       </div>
 
       {/* Order summary */}
-      <div className="mt-10 lg:mt-0">
-        <h2 className="text-lg font-medium text-gray-900">Order summary</h2>
-
-        <div className="mt-4 bg-white border border-gray-200 rounded-lg shadow-sm">
-          <h3 className="sr-only">Items in your cart</h3>
-          <ul className="divide-y divide-gray-200">
-            {products.map((product) => (
-              <li key={product.id} className="flex py-6 px-4 sm:px-6">
-                <div className="flex-shrink-0">
-                  <img
-                    src={product.imageSrc}
-                    alt={product.imageAlt}
-                    className="w-20 rounded-md"
-                  />
-                </div>
-
-                <div className="rtl:mr-6 ltr:ml-6 flex-1 flex flex-col">
-                  <div className="flex">
-                    <div className="min-w-0 flex-1">
-                      <h4 className="text-sm">
-                        <a
-                          href={product.href}
-                          className="font-medium text-gray-700 hover:text-gray-800"
-                        >
-                          {product.title}
-                        </a>
-                      </h4>
-                      <p className="mt-1 text-sm text-gray-500">
-                        {product.color}
-                      </p>
-                      <p className="mt-1 text-sm text-gray-500">
-                        {product.size}
-                      </p>
-                    </div>
-
-                    <div className="rtl:mr-4 ltr:ml-4 flex-shrink-0 flow-root">
-                      <button
-                        type="button"
-                        className="-m-2.5 bg-white p-2.5 flex items-center justify-center text-gray-400 hover:text-gray-500"
-                      >
-                        <span className="sr-only">Remove</span>
-                        <TrashIcon className="h-5 w-5" aria-hidden="true" />
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="flex-1 pt-2 flex items-end justify-between">
-                    <p className="mt-1 text-sm font-medium text-gray-900">
-                      {product.price}
-                    </p>
-
-                    <div className="rtl:mr-4 ltr:ml-4">
-                      <label htmlFor="quantity" className="sr-only">
-                        Quantity
-                      </label>
-                      <select
-                        id="quantity"
-                        name="quantity"
-                        className="rounded-md border border-gray-300 text-base font-medium text-gray-700 text-left shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                      >
-                        <option value={1}>1</option>
-                        <option value={2}>2</option>
-                        <option value={3}>3</option>
-                        <option value={4}>4</option>
-                        <option value={5}>5</option>
-                        <option value={6}>6</option>
-                        <option value={7}>7</option>
-                        <option value={8}>8</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
-          <dl className="border-t border-gray-200 py-6 px-4 space-y-6 sm:px-6">
-            <div className="flex items-center justify-between">
-              <dt className="text-sm">Subtotal</dt>
-              <dd className="text-sm font-medium text-gray-900">$64.00</dd>
-            </div>
-            <div className="flex items-center justify-between">
-              <dt className="text-sm">Shipping</dt>
-              <dd className="text-sm font-medium text-gray-900">$5.00</dd>
-            </div>
-            <div className="flex items-center justify-between">
-              <dt className="text-sm">Taxes</dt>
-              <dd className="text-sm font-medium text-gray-900">$5.52</dd>
-            </div>
-            <div className="flex items-center justify-between border-t border-gray-200 pt-6">
-              <dt className="text-base font-medium">Total</dt>
-              <dd className="text-base font-medium text-gray-900">$75.52</dd>
-            </div>
-          </dl>
-
-          <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
-            <button
-              type="submit"
-              className="w-full bg-indigo-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
-            >
-              Confirm order
-            </button>
-          </div>
-        </div>
-      </div>
+      <OrderSummary lines={lines} linesUpdate={linesUpdate} />
     </form>
   );
 }
@@ -449,6 +355,133 @@ function PickupInformation() {
             aria-hidden="true"
           />
         </Link>
+      </div>
+    </div>
+  );
+}
+
+function OrderSummary({lines, linesUpdate}) {
+  return (
+    <div className="mt-10 lg:mt-0">
+      <h2 className="text-lg font-medium text-gray-900">Order summary</h2>
+
+      <div className="mt-4 bg-white border border-gray-200 rounded-lg shadow-sm">
+        <h3 className="sr-only">Items in your cart</h3>
+        <ul className="divide-y divide-gray-200">
+          {lines.map((line) => (
+            <CartLineProvider key={line.id} line={line}>
+              <li key={line.id} className="flex py-6 px-4 sm:px-6">
+                <div className="flex-shrink-0">
+                  <CartLineImage className="w-20 rounded-md" />
+                </div>
+
+                <div className="rtl:mr-6 ltr:ml-6 flex-1 flex flex-col">
+                  <div className="flex">
+                    <div className="min-w-0 flex-1">
+                      <h4 className="text-sm">
+                        <a
+                          href={line.href}
+                          className="font-medium text-gray-700 hover:text-gray-800"
+                        >
+                          <CartLineProductTitle />
+                        </a>
+                      </h4>
+                      {line.merchandise.selectedOptions.map((option) => (
+                        <p
+                          key={option.value}
+                          className="mt-1 text-sm text-gray-500"
+                        >
+                          {option.value}
+                        </p>
+                      ))}
+                    </div>
+
+                    <div className="rtl:mr-4 ltr:ml-4 flex-shrink-0 flow-root">
+                      <button
+                        type="button"
+                        className="-m-2.5 bg-white p-2.5 flex items-center justify-center text-gray-400 hover:text-gray-500"
+                      >
+                        <CartLineQuantityAdjustButton
+                          adjust="remove"
+                          aria-label="Remove from cart"
+                          className="disabled:pointer-events-all disabled:cursor-wait"
+                        >
+                          <span className="sr-only">Remove</span>
+                          <TrashIcon className="h-5 w-5" aria-hidden="true" />
+                        </CartLineQuantityAdjustButton>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="flex-1 pt-2 flex items-end justify-between">
+                    <p className="mt-1 text-sm font-medium text-gray-900">
+                      <CartLinePrice />
+                    </p>
+
+                    <div className="rtl:mr-4 ltr:ml-4">
+                      <label
+                        htmlFor={`quantity-${line.id}`}
+                        className="sr-only"
+                      >
+                        Quantity, {line.CartLineProductTitle}
+                      </label>
+                      <select
+                        id={`quantity-${line.id}`}
+                        name={`quantity-${line.id}`}
+                        onChange={(e) =>
+                          linesUpdate([
+                            {
+                              id: line.id,
+                              quantity: parseInt(e.target.value),
+                            },
+                          ])
+                        }
+                        className="rounded-md border border-gray-300 text-base font-medium text-gray-700 text-left shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      >
+                        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((quantity) => (
+                          <option
+                            key={quantity}
+                            value={quantity}
+                            selected={quantity === line.quantity}
+                          >
+                            {quantity}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </CartLineProvider>
+          ))}
+        </ul>
+        <dl className="border-t border-gray-200 py-6 px-4 space-y-6 sm:px-6">
+          <div className="flex items-center justify-between">
+            <dt className="text-sm">Subtotal</dt>
+            <dd className="text-sm font-medium text-gray-900">$64.00</dd>
+          </div>
+          <div className="flex items-center justify-between">
+            <dt className="text-sm">Shipping</dt>
+            <dd className="text-sm font-medium text-gray-900">$5.00</dd>
+          </div>
+          <div className="flex items-center justify-between">
+            <dt className="text-sm">Taxes</dt>
+            <dd className="text-sm font-medium text-gray-900">$5.52</dd>
+          </div>
+          <div className="flex items-center justify-between border-t border-gray-200 pt-6">
+            <dt className="text-base font-medium">Total</dt>
+            <dd className="text-base font-medium text-gray-900">$75.52</dd>
+          </div>
+        </dl>
+
+        <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
+          <button
+            type="submit"
+            className="w-full bg-indigo-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
+          >
+            Confirm order
+          </button>
+        </div>
       </div>
     </div>
   );
