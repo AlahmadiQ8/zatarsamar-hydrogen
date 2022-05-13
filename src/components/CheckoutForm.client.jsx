@@ -9,6 +9,11 @@ import {translations} from '../translations';
 import {Link} from '@shopify/hydrogen/client';
 import {MoneyLocalized} from './MoneyLocalized';
 
+const paymentMethods = [
+  {id: 'online', title: translations.online.ar},
+  {id: 'cash', title: translations.cash.ar},
+];
+
 const products = [
   {
     id: 1,
@@ -42,10 +47,51 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
+const customerInfo = {
+  recipient: '',
+  shippingMethod: deliveryMethods[0].title,
+  deliveryAddress: '',
+  paymentMethod: paymentMethods[0],
+};
+
 export function CheckoutForm() {
   const [selectedDeliveryMethod, setSelectedDeliveryMethod] = useState(
     deliveryMethods[0],
   );
+
+  const [currentCustomerInfo, setCurrrentCustomerInfo] = useState(customerInfo);
+
+  const recipientOnChange = (e) => {
+    setCurrrentCustomerInfo({
+      ...currentCustomerInfo,
+      recipient: e.target.value,
+    });
+  };
+
+  const setSelectedDeliveryMethodWrapper = (value) => {
+    setCurrrentCustomerInfo({
+      ...currentCustomerInfo,
+      shippingMethod: value.title,
+    });
+
+    setSelectedDeliveryMethod(value);
+  };
+
+  const deliveryAddressOnChange = (e) => {
+    setCurrrentCustomerInfo({
+      ...currentCustomerInfo,
+      deliveryAddress: e.target.value,
+    });
+  };
+
+  const setPaymentMethod = (e) => {
+    setCurrrentCustomerInfo({
+      ...currentCustomerInfo,
+      paymentMethod: e.target.value,
+    });
+  };
+
+  console.log(currentCustomerInfo);
 
   return (
     <form className="mt-12 lg:grid lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16">
@@ -68,6 +114,8 @@ export function CheckoutForm() {
                 id="receipt-for-who"
                 name="receipt-for-who"
                 className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                required
+                onChange={recipientOnChange}
               />
             </div>
           </div>
@@ -76,7 +124,7 @@ export function CheckoutForm() {
         <div className="mt-10 border-t border-gray-200 pt-10">
           <RadioGroup
             value={selectedDeliveryMethod}
-            onChange={setSelectedDeliveryMethod}
+            onChange={setSelectedDeliveryMethodWrapper}
           >
             <RadioGroup.Label className="text-lg font-medium text-gray-900">
               {translations.deliveryMethod.ar}
@@ -192,9 +240,53 @@ export function CheckoutForm() {
             {selectedDeliveryMethod.id == 1 ? (
               <PickupInformation />
             ) : (
-              <DeliveryInformation />
+              <DeliveryInformation onChangeHandler={deliveryAddressOnChange} />
             )}
           </div>
+        </div>
+
+        {/* Payment */}
+        <div className="mt-10 border-t border-gray-200 pt-10">
+          <h2 className="text-lg font-medium text-gray-900">Payment</h2>
+
+          <fieldset className="mt-4">
+            <legend className="sr-only">Payment type</legend>
+            <div className="space-y-4 sm:flex sm:items-center sm:space-y-0 sm:space-x-10 sm:space-x-reverse ">
+              {paymentMethods.map((paymentMethod, paymentMethodIdx) => (
+                <div
+                  key={paymentMethod.id}
+                  className="flex items-center"
+                  onChange={setPaymentMethod}
+                >
+                  {paymentMethodIdx === 0 ? (
+                    <input
+                      id={paymentMethod.id}
+                      name="payment-type"
+                      type="radio"
+                      defaultChecked
+                      value={paymentMethod.title}
+                      className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                    />
+                  ) : (
+                    <input
+                      id={paymentMethod.id}
+                      name="payment-type"
+                      type="radio"
+                      value={paymentMethod.title}
+                      className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                    />
+                  )}
+
+                  <label
+                    htmlFor={paymentMethod.id}
+                    className="rtl:mr-3 ltr:ml-3 block text-sm font-medium text-gray-700"
+                  >
+                    {paymentMethod.title}
+                  </label>
+                </div>
+              ))}
+            </div>
+          </fieldset>
         </div>
       </div>
 
@@ -307,7 +399,7 @@ export function CheckoutForm() {
   );
 }
 
-function DeliveryInformation() {
+function DeliveryInformation({onChangeHandler}) {
   return (
     <div className="sm:col-span-2">
       <label
@@ -324,6 +416,7 @@ function DeliveryInformation() {
           autoComplete="street-address"
           className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           placeholder={translations.addressPlaceHolder.ar}
+          onChange={onChangeHandler}
         />
       </div>
     </div>

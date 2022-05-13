@@ -89,6 +89,14 @@ export const translations = {
   },
   addressPlaceHolder: {
     value: '',
-    ar: 'المنطقة , القطعه , الشارع , المنزل'
+    ar: 'م , ق , ش , م أو اللوكيشن'
   },
+  cash: {
+    value: 'Cash',
+    ar: 'كاش',
+  },
+  online: {
+    value: 'Online',
+    ar: 'اولاين (عن طريق Link)',
+  }
 }
