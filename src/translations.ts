@@ -98,5 +98,9 @@ export const translations = {
   online: {
     value: 'Online',
     ar: 'اولاين (عن طريق Link)',
+  },
+  sendOrderThroughWhatsapp: {
+    value: '',
+    ar: 'أرسل الطلب عبر الواتساب'
   }
 }

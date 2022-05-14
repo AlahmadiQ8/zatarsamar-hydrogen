@@ -17,26 +17,15 @@ import {
 } from '@heroicons/react/solid';
 import {translations} from '../translations';
 import {MoneyLocalized} from './MoneyLocalized';
+import {WhatsAppIcon} from './WhatsappIcon';
+import {CartEmpty} from './CartEmpty';
+import {LoadingFallback} from './LoadingFallback';
 
 const paymentMethods = [
   {id: 'online', title: translations.online.ar},
   {id: 'cash', title: translations.cash.ar},
 ];
 
-const products = [
-  {
-    id: 1,
-    title: 'Basic Tee',
-    href: '#',
-    price: '$32.00',
-    color: 'Black',
-    size: 'Large',
-    imageSrc:
-      'https://tailwindui.com/img/ecommerce-images/checkout-page-02-product-01.jpg',
-    imageAlt: "Front of men's Basic Tee in black.",
-  },
-  // More products...
-];
 const deliveryMethods = [
   {
     id: 1,
@@ -58,19 +47,23 @@ function classNames(...classes) {
 
 const customerInfo = {
   recipient: '',
-  shippingMethod: deliveryMethods[0].title,
+  shippingMethod: deliveryMethods[0],
   deliveryAddress: '',
   paymentMethod: paymentMethods[0],
 };
 
 export function CheckoutForm() {
-  const [selectedDeliveryMethod, setSelectedDeliveryMethod] = useState(
-    deliveryMethods[0],
-  );
-
   const [currentCustomerInfo, setCurrrentCustomerInfo] = useState(customerInfo);
 
-  const {totalQuantity, lines, linesUpdate, status} = useCart();
+  const {lines, linesUpdate, totalQuantity, status} = useCart();
+
+  if (status == 'fetching' || status == 'uninitialized') {
+    return <LoadingFallback />;
+  }
+
+  if (totalQuantity == 0) {
+    return <CartEmpty />;
+  }
 
   const recipientOnChange = (e) => {
     setCurrrentCustomerInfo({
@@ -82,10 +75,10 @@ export function CheckoutForm() {
   const setSelectedDeliveryMethodWrapper = (value) => {
     setCurrrentCustomerInfo({
       ...currentCustomerInfo,
-      shippingMethod: value.title,
+      shippingMethod: value,
     });
 
-    setSelectedDeliveryMethod(value);
+    // setSelectedDeliveryMethod(value);
   };
 
   const deliveryAddressOnChange = (e) => {
@@ -101,6 +94,8 @@ export function CheckoutForm() {
       paymentMethod: e.target.value,
     });
   };
+
+  console.log(JSON.stringify(currentCustomerInfo, null, 2));
 
   return (
     <form className="mt-12 lg:grid lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16">
@@ -132,7 +127,7 @@ export function CheckoutForm() {
 
         <div className="mt-10 border-t border-gray-200 pt-10">
           <RadioGroup
-            value={selectedDeliveryMethod}
+            value={currentCustomerInfo.shippingMethod}
             onChange={setSelectedDeliveryMethodWrapper}
           >
             <RadioGroup.Label className="text-lg font-medium text-gray-900">
@@ -204,7 +199,7 @@ export function CheckoutForm() {
 
         <div className="mt-10 border-t border-gray-200 pt-10">
           <h2 className="text-lg font-medium text-gray-900">
-            {selectedDeliveryMethod.id == 1
+            {currentCustomerInfo.shippingMethod.id == 1
               ? translations.pickupInformation.ar
               : translations.shippingInformation.ar}
           </h2>
@@ -246,7 +241,7 @@ export function CheckoutForm() {
               </div>
             </div> */}
 
-            {selectedDeliveryMethod.id == 1 ? (
+            {currentCustomerInfo.shippingMethod.id == 1 ? (
               <PickupInformation />
             ) : (
               <DeliveryInformation onChangeHandler={deliveryAddressOnChange} />
@@ -300,7 +295,11 @@ export function CheckoutForm() {
       </div>
 
       {/* Order summary */}
-      <OrderSummary lines={lines} linesUpdate={linesUpdate} />
+      <OrderSummary
+        lines={lines}
+        linesUpdate={linesUpdate}
+        shippingMethod={currentCustomerInfo.shippingMethod}
+      />
     </form>
   );
 }
@@ -360,10 +359,12 @@ function PickupInformation() {
   );
 }
 
-function OrderSummary({lines, linesUpdate}) {
+function OrderSummary({lines, linesUpdate, shippingMethod}) {
   return (
     <div className="mt-10 lg:mt-0">
-      <h2 className="text-lg font-medium text-gray-900">Order summary</h2>
+      <h2 className="text-lg font-medium text-gray-900">
+        {translations.orderSummary.ar}
+      </h2>
 
       <div className="mt-4 bg-white border border-gray-200 rounded-lg shadow-sm">
         <h3 className="sr-only">Items in your cart</h3>
@@ -397,25 +398,20 @@ function OrderSummary({lines, linesUpdate}) {
                     </div>
 
                     <div className="rtl:mr-4 ltr:ml-4 flex-shrink-0 flow-root">
-                      <button
-                        type="button"
-                        className="-m-2.5 bg-white p-2.5 flex items-center justify-center text-gray-400 hover:text-gray-500"
+                      <CartLineQuantityAdjustButton
+                        adjust="remove"
+                        aria-label="Remove from cart"
+                        className="-m-2.5 bg-white p-2.5 flex items-center justify-center text-gray-400 hover:text-gray-500 disabled:pointer-events-all disabled:cursor-wait"
                       >
-                        <CartLineQuantityAdjustButton
-                          adjust="remove"
-                          aria-label="Remove from cart"
-                          className="disabled:pointer-events-all disabled:cursor-wait"
-                        >
-                          <span className="sr-only">Remove</span>
-                          <TrashIcon className="h-5 w-5" aria-hidden="true" />
-                        </CartLineQuantityAdjustButton>
-                      </button>
+                        <span className="sr-only">Remove</span>
+                        <TrashIcon className="h-5 w-5" aria-hidden="true" />
+                      </CartLineQuantityAdjustButton>
                     </div>
                   </div>
 
                   <div className="flex-1 pt-2 flex items-end justify-between">
                     <p className="mt-1 text-sm font-medium text-gray-900">
-                      <CartLinePrice />
+                      <CartLinePrice as="span" />
                     </p>
 
                     <div className="rtl:mr-4 ltr:ml-4">
@@ -436,14 +432,11 @@ function OrderSummary({lines, linesUpdate}) {
                             },
                           ])
                         }
+                        defaultValue={line.quantity}
                         className="rounded-md border border-gray-300 text-base font-medium text-gray-700 text-left shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                       >
                         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((quantity) => (
-                          <option
-                            key={quantity}
-                            value={quantity}
-                            selected={quantity === line.quantity}
-                          >
+                          <option key={quantity} value={quantity}>
                             {quantity}
                           </option>
                         ))}
@@ -457,29 +450,41 @@ function OrderSummary({lines, linesUpdate}) {
         </ul>
         <dl className="border-t border-gray-200 py-6 px-4 space-y-6 sm:px-6">
           <div className="flex items-center justify-between">
-            <dt className="text-sm">Subtotal</dt>
-            <dd className="text-sm font-medium text-gray-900">$64.00</dd>
+            <dt className="text-sm">{translations.subtotal.ar}</dt>
+            <dd className="text-sm font-medium text-gray-900">
+              <CartEstimatedCost amountType="subtotal" />
+            </dd>
           </div>
           <div className="flex items-center justify-between">
-            <dt className="text-sm">Shipping</dt>
-            <dd className="text-sm font-medium text-gray-900">$5.00</dd>
-          </div>
-          <div className="flex items-center justify-between">
-            <dt className="text-sm">Taxes</dt>
-            <dd className="text-sm font-medium text-gray-900">$5.52</dd>
+            <dt className="text-sm">{translations.shipping.ar}</dt>
+            <dd className="text-sm font-medium text-gray-900">
+              {shippingMethod.id == 1 ? (
+                <MoneyLocalized amount={shippingMethod.price} />
+              ) : (
+                translations.calculatedAtNextStep.ar
+              )}
+            </dd>
           </div>
           <div className="flex items-center justify-between border-t border-gray-200 pt-6">
-            <dt className="text-base font-medium">Total</dt>
-            <dd className="text-base font-medium text-gray-900">$75.52</dd>
+            <dt className="text-base font-medium">
+              {translations.orderTotal.ar}
+            </dt>
+            <dd className="text-base font-medium text-gray-900">
+              <CartEstimatedCost amountType="total" />
+            </dd>
           </div>
         </dl>
 
         <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
           <button
-            type="submit"
-            className="w-full bg-indigo-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
+            type="button"
+            className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
           >
-            Confirm order
+            {translations.sendOrderThroughWhatsapp.ar}
+            <WhatsAppIcon
+              className="rtl:mr-3 ltr:ml-3 rtl:-ml-1 ltr:-mr-1 h-5 w-5"
+              aria-hidden="true"
+            />
           </button>
         </div>
       </div>

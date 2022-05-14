@@ -8,10 +8,10 @@ import {
   CartLineQuantityAdjustButton,
   CartEstimatedCost,
 } from '@shopify/hydrogen/client';
-import {BUTTON_PRIMARY_CLASSES} from './Button.client';
 import {LoadingFallback} from './LoadingFallback';
 import {XIcon} from '@heroicons/react/solid';
 import {translations} from '../translations';
+import {CartEmpty} from './CartEmpty';
 
 export function Cart2() {
   const {totalQuantity, lines, linesUpdate, status} = useCart();
@@ -88,14 +88,11 @@ export function Cart2() {
                               },
                             ])
                           }
+                          defaultValue={line.quantity}
                           className="max-w-full rounded-md border border-gray-300 py-1.5 text-base leading-5 font-medium text-gray-700 rtl:text-right ltr:text-left shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                         >
                           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((quantity) => (
-                            <option
-                              key={quantity}
-                              value={quantity}
-                              selected={quantity === line.quantity}
-                            >
+                            <option key={quantity} value={quantity}>
                               {quantity}
                             </option>
                           ))}
@@ -190,18 +187,5 @@ export function Cart2() {
         </div>
       </section>
     </form>
-  );
-}
-
-function CartEmpty() {
-  return (
-    <div className="p-7 pt-20 flex flex-col">
-      <p className="mb-4 text-lg text-gray-500 text-center">
-        Your cart is empty
-      </p>
-      <Link to="/" className={BUTTON_PRIMARY_CLASSES}>
-        Continue Shopping
-      </Link>
-    </div>
   );
 }
