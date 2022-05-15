@@ -3,6 +3,7 @@ import {RadioGroup} from '@headlessui/react';
 import {
   Link,
   useCart,
+  useCountry,
   CartLineProvider,
   CartLineImage,
   CartLineProductTitle,
@@ -16,10 +17,11 @@ import {
   LocationMarkerIcon,
 } from '@heroicons/react/solid';
 import {translations} from '../translations';
-import {MoneyLocalized} from './MoneyLocalized';
 import {WhatsAppIcon} from './WhatsappIcon';
 import {CartEmpty} from './CartEmpty';
 import {LoadingFallback} from './LoadingFallback';
+import {useLocalizedAmount} from '../lib/localizedAmountHook';
+import {encodeCart} from '../lib/cart-encoder';
 
 const paymentMethods = [
   {id: 'online', title: translations.online.ar},
@@ -57,6 +59,11 @@ export function CheckoutForm() {
 
   const {lines, linesUpdate, totalQuantity, status} = useCart();
 
+  const [country] = useCountry();
+  const [getLocalizedAmount] = useLocalizedAmount(country.currency.isoCode);
+
+  const {estimatedCost} = useCart();
+
   if (status == 'fetching' || status == 'uninitialized') {
     return <LoadingFallback />;
   }
@@ -64,6 +71,13 @@ export function CheckoutForm() {
   if (totalQuantity == 0) {
     return <CartEmpty />;
   }
+
+  const inqueryEncoded = encodeCart(
+    currentCustomerInfo,
+    lines,
+    getLocalizedAmount,
+    estimatedCost.totalAmount.amount,
+  );
 
   const recipientOnChange = (e) => {
     setCurrrentCustomerInfo({
@@ -89,13 +103,17 @@ export function CheckoutForm() {
   };
 
   const setPaymentMethod = (e) => {
+    // debugger
+    console.log(e.target.value)
     setCurrrentCustomerInfo({
       ...currentCustomerInfo,
       paymentMethod: e.target.value,
     });
   };
 
-  console.log(JSON.stringify(currentCustomerInfo, null, 2));
+  // console.log(JSON.stringify(currentCustomerInfo, null, 2));
+  // console.log(JSON.stringify(lines, null, 2));
+  console.log(getLocalizedAmount(2.3));
 
   return (
     <form className="mt-12 lg:grid lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16">
@@ -167,11 +185,9 @@ export function CheckoutForm() {
                             as="span"
                             className="mt-6 text-sm font-medium text-gray-900"
                           >
-                            {typeof deliveryMethod.price == 'number' ? (
-                              <MoneyLocalized amount={deliveryMethod.price} />
-                            ) : (
-                              deliveryMethod.price
-                            )}
+                            {typeof deliveryMethod.price == 'number'
+                              ? getLocalizedAmount(deliveryMethod.price)
+                              : deliveryMethod.price}
                           </RadioGroup.Description>
                         </div>
                       </div>
@@ -299,6 +315,8 @@ export function CheckoutForm() {
         lines={lines}
         linesUpdate={linesUpdate}
         shippingMethod={currentCustomerInfo.shippingMethod}
+        getLocalizedAmount={getLocalizedAmount}
+        inqueryEncoded={inqueryEncoded}
       />
     </form>
   );
@@ -359,7 +377,13 @@ function PickupInformation() {
   );
 }
 
-function OrderSummary({lines, linesUpdate, shippingMethod}) {
+function OrderSummary({
+  lines,
+  linesUpdate,
+  shippingMethod,
+  getLocalizedAmount,
+  inqueryEncoded,
+}) {
   return (
     <div className="mt-10 lg:mt-0">
       <h2 className="text-lg font-medium text-gray-900">
@@ -458,11 +482,9 @@ function OrderSummary({lines, linesUpdate, shippingMethod}) {
           <div className="flex items-center justify-between">
             <dt className="text-sm">{translations.shipping.ar}</dt>
             <dd className="text-sm font-medium text-gray-900">
-              {shippingMethod.id == 1 ? (
-                <MoneyLocalized amount={shippingMethod.price} />
-              ) : (
-                translations.calculatedAtNextStep.ar
-              )}
+              {shippingMethod.id == 1
+                ? getLocalizedAmount(shippingMethod.price)
+                : translations.calculatedAtNextStep.ar}
             </dd>
           </div>
           <div className="flex items-center justify-between border-t border-gray-200 pt-6">
@@ -476,8 +498,10 @@ function OrderSummary({lines, linesUpdate, shippingMethod}) {
         </dl>
 
         <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
-          <button
-            type="button"
+          <Link
+            to={`https://wa.me/96566599030?text=${inqueryEncoded}`}
+            target="_blank"
+            rel="noopener"
             className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
           >
             {translations.sendOrderThroughWhatsapp.ar}
@@ -485,7 +509,7 @@ function OrderSummary({lines, linesUpdate, shippingMethod}) {
               className="rtl:mr-3 ltr:ml-3 rtl:-ml-1 ltr:-mr-1 h-5 w-5"
               aria-hidden="true"
             />
-          </button>
+          </Link>
         </div>
       </div>
     </div>
