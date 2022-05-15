@@ -16,12 +16,11 @@ import {Suspense} from 'react';
 
 export default function Index({country = {isoCode: 'KW'}}) {
   return (
-    <Layout>
+    <Layout hero={<Welcome />}>
       <Suspense fallback={null}>
         <SeoForHomepage />
       </Suspense>
       <div className="relative mb-12">
-        <Welcome />
         <Suspense fallback={<BoxFallback />}>
           <FeaturedProductsBox country={country} />
         </Suspense>

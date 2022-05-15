@@ -6,6 +6,8 @@ import {
 } from '@shopify/hydrogen';
 import gql from 'graphql-tag';
 import {Suspense} from 'react';
+import HeroImage from '../assets/hero.svg';
+import HeroImageSm from '../assets/hero-sm.svg';
 
 function ExternalIcon() {
   return (
@@ -150,34 +152,28 @@ function TemplateLinks() {
  */
 export default function Welcome() {
   return (
-    <div className="text-gray-900 pt-16 rounded-[40px] my-16 px-4 xl:px-12 bg-gradient-to-b from-white -mx-4 xl:-mx-12">
-      <div className="text-center mb-16">
-        <h1 className="font-extrabold mb-4 text-5xl md:text-7xl">
-          Hello, Hydrogen
-        </h1>
-        <p className="text-lg mb-8">
-          Welcome to your custom storefront. Let&rsquo;s get building.
-        </p>
-        <div className="flex flex-col lg:flex-row justify-center items-center gap-8 text-gray-700">
-          <DocsButton
-            url="https://shopify.dev/custom-storefronts/hydrogen"
-            label="Browse Hydrogen documentation"
-          />
-          <DocsButton url="/graphql" label="Open the GraphiQL explorer" />
-          <DocsButton
-            url="https://github.com/Shopify/hydrogen-examples"
-            label="Explore Hydrogen examples"
-          />
-        </div>
+    <div className="relative h-52 md:h-96 inset-0 mt-16">
+      <div className="absolute inset-0">
+        <img
+          className="hidden lg:block h-full w-full object-cover object-center"
+          src={HeroImage}
+          alt="Zatar Samar Hero"
+        />
+        <img
+          className="block lg:hidden h-full w-full object-cover object-center"
+          src={HeroImageSm}
+          alt="Zatar Samar Hero"
+        />
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
+
+      {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
         <Suspense fallback={<BoxFallback />}>
           <StorefrontInfo />
         </Suspense>
         <Suspense fallback={<BoxFallback />}>
           <TemplateLinks />
         </Suspense>
-      </div>
+      </div> */}
     </div>
   );
 }

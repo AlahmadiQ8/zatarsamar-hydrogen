@@ -27,9 +27,6 @@ export function Header2() {
                   height={8}
                   width={10}
                 />
-                <span className="text-lg font-bold text-stone-700">
-                  {translations.zatarSamar.ar}
-                </span>
               </Link>
             </div>
 
