@@ -4,6 +4,7 @@ import {Image, Link} from '@shopify/hydrogen/client';
 import {ShoppingBagIcon} from '@heroicons/react/outline';
 import ZatarSamarLogo from '../assets/zatarsamar-logo.png';
 import {translations} from '../translations';
+import {WhatsAppIcon} from '../components/WhatsappIcon';
 
 export function Header2() {
   const {totalQuantity} = useCart();
@@ -49,8 +50,26 @@ export function Header2() {
             </div> */}
 
             <div className="flex-1 flex items-center justify-end">
+              <div className="flex items-center">
+                <Link
+                  to={`https://wa.me/96566599030`}
+                  target="_blank"
+                  rel="noopener"
+                  className="inline-flex items-center px-2.5 py-1.5 border border-green-700 shadow-sm text-xs font-medium rounded text-green-700 bg-white hover:bg-green-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                >
+                  <div className="flex flex-row-reverse space-x-1">
+                    <div>965+</div>
+                    <div>65544219</div>
+                  </div>
+                  <WhatsAppIcon
+                    className="rtl:mr-2 ltr:ml-2 rtl:-ml-1 ltr:-mr-1 h-5 w-5"
+                    aria-hidden="true"
+                  />
+                </Link>
+              </div>
+
               {/* Cart */}
-              <div className="ml-4 flow-root lg:ml-8">
+              <div className="mr-4 flow-root lg:ml-8">
                 <Link to="/cart" className="group -m-2 p-2 flex items-center">
                   <ShoppingBagIcon
                     className="flex-shrink-0 h-6 w-6 text-gray-400 group-hover:text-gray-500"
