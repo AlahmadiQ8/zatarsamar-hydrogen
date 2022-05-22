@@ -3,11 +3,14 @@ import {
   useShopQuery,
   flattenConnection,
   Link,
+  Image,
 } from '@shopify/hydrogen';
 import gql from 'graphql-tag';
 import {Suspense} from 'react';
-import HeroImage from '../assets/hero.svg';
-import HeroImageSm from '../assets/hero-sm.svg';
+import HeroImage from '../assets/hero-2.svg';
+import HeroImageSm from '../assets/hero-2-sm.svg';
+import ZatarHero from '../assets/header-zatar.jpeg';
+import {ExternalLinkIcon} from '@heroicons/react/solid';
 
 function ExternalIcon() {
   return (
@@ -152,21 +155,24 @@ function TemplateLinks() {
  */
 export default function Welcome() {
   return (
-    <div className="relative h-52 md:h-96 inset-0 mt-16">
-      <div className="absolute inset-0">
-        <img
-          className="hidden lg:block h-full w-full object-cover object-center"
+    <>
+      <div className=" mt-16">
+        <Image
+          width={1500}
+          height={951}
+          className="hidden lg:block h-full w-full object-cover object object-center"
           src={HeroImage}
           alt="Zatar Samar Hero"
         />
-        <img
+        <Image
+          width={914}
+          height={527}
           className="block lg:hidden h-full w-full object-cover object-center"
           src={HeroImageSm}
           alt="Zatar Samar Hero"
         />
-      </div>
 
-      {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
+        {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
         <Suspense fallback={<BoxFallback />}>
           <StorefrontInfo />
         </Suspense>
@@ -174,7 +180,9 @@ export default function Welcome() {
           <TemplateLinks />
         </Suspense>
       </div> */}
-    </div>
+      </div>
+      {/* <StoreDescription /> */}
+    </>
   );
 }
 
