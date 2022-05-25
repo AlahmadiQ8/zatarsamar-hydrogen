@@ -156,7 +156,7 @@ function TemplateLinks() {
 export default function Welcome() {
   return (
     <>
-      <div className=" mt-16">
+      <div className="pt-20 lg:pt-0 lg:mt-16">
         <Image
           width={1500}
           height={951}

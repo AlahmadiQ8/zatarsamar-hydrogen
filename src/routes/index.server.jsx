@@ -2,7 +2,6 @@ import {
   useShop,
   useShopQuery,
   flattenConnection,
-  Link,
   Seo,
   CacheDays,
 } from '@shopify/hydrogen';
@@ -13,6 +12,7 @@ import FeaturedCollection from '../components/FeaturedCollection';
 import {ProductList} from '../components/ProductList';
 import Welcome from '../components/Welcome.server';
 import {Suspense} from 'react';
+import {translations} from '../translations';
 
 export default function Index({country = {isoCode: 'KW'}}) {
   return (
@@ -22,11 +22,12 @@ export default function Index({country = {isoCode: 'KW'}}) {
       </Suspense>
       <div className="relative mb-12">
         <Suspense fallback={<BoxFallback />}>
+          {/* <StoreDescription /> */}
           <FeaturedProductsBox country={country} />
         </Suspense>
-        <Suspense fallback={<BoxFallback />}>
+        {/* <Suspense fallback={<BoxFallback />}>
           <FeaturedCollectionBox country={country} />
-        </Suspense>
+        </Suspense> */}
       </div>
     </Layout>
   );
@@ -77,31 +78,13 @@ function FeaturedProductsBox({country}) {
     : null;
 
   return (
-    <div className="bg-white p-12 shadow-xl rounded-xl mb-10">
+    <div className="p-5 md:p-12 shadow-xl rounded-xl mb-10">
       {featuredProductsCollection ? (
         <>
-          <div className="flex justify-between items-center mb-8 text-md font-medium">
-            <span className="text-black uppercase">
-              {featuredProductsCollection.title}
-            </span>
-            <span className="hidden md:inline-flex">
-              <Link
-                to={`/collections/${featuredProductsCollection.handle}`}
-                className="text-blue-600 hover:underline"
-              >
-                Shop all
-              </Link>
-            </span>
-          </div>
+          <h1 className="text-black mb-8 text-2xl font-medium">
+            {translations.ourProducts.ar}
+          </h1>
           <ProductList products={featuredProducts} />
-          <div className="md:hidden text-center">
-            <Link
-              to={`/collections/${featuredProductsCollection.handle}`}
-              className="text-blue-600"
-            >
-              Shop all
-            </Link>
-          </div>
         </>
       ) : null}
     </div>
@@ -135,10 +118,35 @@ const SEO_QUERY = gql`
   }
 `;
 
+// function StoreDescription() {
+//   return (
+//     <div className="relative shadow-xl rounded-xl md:my-10 my-5">
+//       {/* <div className="h-56 sm:h-72 md:absolute rtl:md:right-0 ltr:md:left-0 md:h-full md:w-1/2">
+//         <Image
+//           className="w-full h-full object-cover rtl:md:rounded-tr-xl rtl:md:rounded-br-xl ltr:md:rounded-tl-xl ltr:md:rounded-bl-xl rounded-t-xl rtl:md:rounded-tl-none ltr:md:rounded-tr-none"
+//           src={ZatarImage}
+//           width={739}
+//           height={739}
+//         />
+//       </div> */}
+//       <div className="relative max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+//         <div className="rtl:md:mr-auto ltr:md:ml-auto md:w-1/2 rtl:md:pr-10 ltr:md:pl-10">
+//           <p className="mt-2 text-3xl font-extrabold tracking-tight sm:text-4xl">
+//             مشروع كويتي
+//           </p>
+//           <p className="mt-3 text-lg">
+//           أجود أنواع الزعتر الفلسطيني
+//           </p>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
 const QUERY = gql`
   query indexContent($country: CountryCode, $language: LanguageCode)
   @inContext(country: $country, language: $language) {
-    collections(first: 2) {
+    collections(first: 1) {
       edges {
         node {
           handle
@@ -151,7 +159,7 @@ const QUERY = gql`
             width
             height
           }
-          products(first: 3) {
+          products(first: 100) {
             edges {
               node {
                 compareAtPriceRange {

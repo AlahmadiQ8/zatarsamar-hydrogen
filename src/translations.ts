@@ -102,5 +102,9 @@ export const translations = {
   sendOrderThroughWhatsapp: {
     value: '',
     ar: 'أرسل الطلب عبر الواتساب'
+  },
+  ourProducts: {
+    value: 'Products',
+    ar: 'منتجاتنا',
   }
 }
