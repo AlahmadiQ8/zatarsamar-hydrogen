@@ -13,14 +13,14 @@ export default function Welcome() {
           width={1500}
           height={951}
           className="hidden lg:block h-full w-full object-cover object object-center"
-          src={HeroImage}
+          src="/assets/hero-2.svg"
           alt="Zatar Samar Hero"
         />
         <Image
           width={914}
           height={527}
           className="block lg:hidden h-full w-full object-cover object-center"
-          src={HeroImageSm}
+          src="/assets/hero-2-sm.svg"
           alt="Zatar Samar Hero"
         />
       </div>
