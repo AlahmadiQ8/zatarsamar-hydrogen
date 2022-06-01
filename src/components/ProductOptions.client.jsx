@@ -1,7 +1,6 @@
 import {useProduct, ProductPrice} from '@shopify/hydrogen/client';
 import {RadioGroup} from '@headlessui/react';
 import {translations} from '../translations';
-import {log} from '@shopify/hydrogen';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
