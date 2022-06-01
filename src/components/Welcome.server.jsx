@@ -1,6 +1,4 @@
 import {Image} from '@shopify/hydrogen';
-import HeroImage from '../assets/hero-2.svg';
-import HeroImageSm from '../assets/hero-2-sm.svg';
 
 /**
  * A server component that displays the content on the homepage of the Hydrogen app
