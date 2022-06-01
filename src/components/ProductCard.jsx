@@ -25,7 +25,7 @@ export function ProductCard({product}) {
     <ProductProvider data={product} initialVariantId={firstVariant.id}>
       <Link
         to={`/products/${product.handle}`}
-        className="group bg-white border rounded-lg"
+        className="group border rounded-lg"
       >
         <div className="flex w-full overflow-hidden space-x-2 rtl:space-x-reverse">
           {firstVariant.image && (

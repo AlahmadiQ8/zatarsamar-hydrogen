@@ -106,5 +106,13 @@ export const translations = {
   ourProducts: {
     value: 'Products',
     ar: 'منتجاتنا',
+  },
+  addToCart: {
+    value: 'Add to Cart',
+    ar: 'أضف للسلة'
+  },
+  Size: {
+    value: 'Size',
+    ar: 'الحجم'
   }
 }
