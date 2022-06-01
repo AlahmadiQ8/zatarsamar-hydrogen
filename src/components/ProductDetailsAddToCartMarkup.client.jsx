@@ -1,13 +1,5 @@
-import {
-  useProduct,
-  AddToCartButton,
-  BuyNowButton,
-} from '@shopify/hydrogen/client';
-import { translations } from '../translations';
-import {
-  BUTTON_PRIMARY_CLASSES,
-  BUTTON_SECONDARY_CLASSES,
-} from './Button.client';
+import {useProduct, AddToCartButton} from '@shopify/hydrogen/client';
+import {translations} from '../translations';
 
 export function AddToCartMarkup() {
   const {selectedVariant} = useProduct();

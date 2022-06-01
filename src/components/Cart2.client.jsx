@@ -65,9 +65,10 @@ export function Cart2() {
                                 </p>
                               ) : null} */}
                         </ul>
-                        <p className="mt-1 text-sm font-medium text-gray-900">
-                          <CartLinePrice />
-                        </p>
+                        <CartLinePrice
+                          as="p"
+                          className="mt-1 text-sm font-medium text-gray-900"
+                        />
                       </div>
 
                       <div className="mt-4 sm:mt-0 rtl:sm:pl-9 ltr:sm:pr-9">
@@ -99,18 +100,13 @@ export function Cart2() {
                         </select>
 
                         <div className="absolute top-0 rtl:left-0 ltr:right-0">
-                          <button
-                            type="button"
-                            className="-m-2 p-2 inline-flex text-gray-400 hover:text-gray-500"
+                          <CartLineQuantityAdjustButton
+                            adjust="remove"
+                            aria-label="Remove from cart"
+                            className="-m-2 p-2 inline-flex text-gray-400 hover:text-gray-500 disabled:pointer-events-all disabled:cursor-wait"
                           >
-                            <CartLineQuantityAdjustButton
-                              adjust="remove"
-                              aria-label="Remove from cart"
-                              className="disabled:pointer-events-all disabled:cursor-wait"
-                            >
-                              <XIcon className="h-5 w-5" aria-hidden="true" />
-                            </CartLineQuantityAdjustButton>
-                          </button>
+                            <XIcon className="h-5 w-5" aria-hidden="true" />
+                          </CartLineQuantityAdjustButton>
                         </div>
                       </div>
                     </div>

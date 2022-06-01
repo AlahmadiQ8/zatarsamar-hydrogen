@@ -104,7 +104,6 @@ export function CheckoutForm() {
 
   const setPaymentMethod = (e) => {
     // debugger
-    console.log(e.target.value)
     setCurrrentCustomerInfo({
       ...currentCustomerInfo,
       paymentMethod: e.target.value,
@@ -113,7 +112,6 @@ export function CheckoutForm() {
 
   // console.log(JSON.stringify(currentCustomerInfo, null, 2));
   // console.log(JSON.stringify(lines, null, 2));
-  console.log(getLocalizedAmount(2.3));
 
   return (
     <form className="mt-12 lg:grid lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16">

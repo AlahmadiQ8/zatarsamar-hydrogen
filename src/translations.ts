@@ -114,5 +114,9 @@ export const translations = {
   Size: {
     value: 'Size',
     ar: 'الحجم'
+  },
+  reviewOrder: {
+    value: "",
+    ar: "راجع الطلب"
   }
 }

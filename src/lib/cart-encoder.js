@@ -119,13 +119,10 @@ export function encodeCart(
 
   result += '\n*طريقة الدفع*\n';
   result += 'ـــــــــــــــــــــــ\n';
-  console.log(orderDetails.paymentMethod)
   result += orderDetails.paymentMethod + '\n\n';
 
   result += '\n*الاجمالي قبل رسوم التوصيل*\n';
   result += 'ـــــــــــــــــــــــ\n';
-  console.log("omg")
-  console.log(totalAmount)
   result += getLocalizedAmount(totalAmount);
 
   result += '\n\n*الفاتورة باسم*\n';
