@@ -9,13 +9,13 @@
     "lint": "npm-run-all lint:*",
     "lint:js": "eslint --no-error-on-unmatched-pattern --ext .js,.ts,.jsx,.tsx src",
     "lint:css": "stylelint ./src/**/*.{css,sass,scss}",
-    "build": "yarn build:client && yarn build:server && yarn build:worker",
+    "build": "npm run build:client && npm run build:server && npm run build:worker",
     "build:client": "vite build --outDir dist/client --manifest",
     "build:server": "vite build --outDir dist/server --ssr @shopify/hydrogen/platforms/node",
     "build:worker": "cross-env WORKER=true vite build --outDir dist/worker --ssr @shopify/hydrogen/platforms/worker",
     "serve": "node --enable-source-maps dist/server",
     "test": "WATCH=true vitest",
-    "test:ci": "yarn build && vitest run",
+    "test:ci": "npm run build && vitest run",
     "preview": "shopify hydrogen preview"
   },
   "prettier": "@shopify/prettier-config",
@@ -43,11 +43,11 @@
     "@heroicons/react": "^1.0.6",
     "@shopify/hydrogen": "^0.17.1",
     "@tailwindcss/forms": "^0.5.1",
-    "body-parser": "^1.19.1",
+    "body-parser": "^1.20.0",
     "compression": "^1.7.4",
     "graphql-tag": "^2.12.4",
     "react": "0.0.0-experimental-2bf7c02f0-20220314",
     "react-dom": "0.0.0-experimental-2bf7c02f0-20220314",
-    "serve-static": "^1.14.1"
+    "serve-static": "^1.15.0"
   }
 }

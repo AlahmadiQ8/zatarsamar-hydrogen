@@ -1,0 +1,12 @@
+version: '3.4'
+
+services:
+  zatarsamarhydrogen2:
+    image: zatarsamarhydrogen2
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: production
+    ports:
+      - 8080:8080
