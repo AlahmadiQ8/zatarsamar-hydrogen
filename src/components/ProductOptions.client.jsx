@@ -11,7 +11,7 @@ function classNames(...classes) {
  */
 export default function ProductOptions() {
   const {options, setSelectedOption, selectedOptions, variants} = useProduct();
-  const hasMoreThanOneOption = options.length > 1;
+  const hasMoreThanOneOption = variants.length > 1;
 
   return (
     <div className="mt-10 lg:max-w-lg lg:col-start-1 lg:row-start-2 lg:self-start">
