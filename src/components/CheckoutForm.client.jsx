@@ -51,7 +51,7 @@ const customerInfo = {
   recipient: '',
   shippingMethod: deliveryMethods[0],
   deliveryAddress: '',
-  paymentMethod: paymentMethods[0],
+  paymentMethod: paymentMethods[0].title,
 };
 
 export function CheckoutForm() {
@@ -278,11 +278,11 @@ export function CheckoutForm() {
                 >
                   {paymentMethodIdx === 0 ? (
                     <input
-                      id={paymentMethod.id}
+                      id={paymentMethod}
                       name="payment-type"
                       type="radio"
                       defaultChecked
-                      value={paymentMethod.title}
+                      value={paymentMethod}
                       className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
                     />
                   ) : (
