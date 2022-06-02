@@ -17,13 +17,6 @@ import {
 export function ProductDetails({product}) {
   const initialVariant = flattenConnection(product.variants)[0];
 
-  const productMetafields = useParsedMetafields(product.metafields);
-  const lifetimeWarrantyMetafield = productMetafields.find(
-    (metafield) =>
-      metafield.namespace === 'my_fields' &&
-      metafield.key === 'lifetime_warranty',
-  );
-
   return (
     <>
       <ProductProvider data={product} initialVariantId={initialVariant.id}>
