@@ -57,13 +57,6 @@ export function Cart2() {
                           {line.merchandise.selectedOptions.map((option) => (
                             <li key={option.value}>{option.value}</li>
                           ))}
-
-                          {/* <p className="text-gray-500">{product.color}</p>
-                              {product.size ? (
-                                <p className="rtl:mr-4 ltr:ml-4 rtl:pr-4 ltr:pl-4 rtl:border-r ltr:border-l border-gray-200 text-gray-500">
-                                  {product.size}
-                                </p>
-                              ) : null} */}
                         </ul>
                         <CartLinePrice
                           as="p"
