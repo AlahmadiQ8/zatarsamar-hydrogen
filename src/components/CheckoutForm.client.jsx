@@ -497,7 +497,7 @@ function OrderSummary({
 
         <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
           <Link
-            to={`https://wa.me/96566599030?text=${inqueryEncoded}`}
+            to={`https://wa.me/96565544219?text=${inqueryEncoded}`}
             target="_blank"
             rel="noopener"
             className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"

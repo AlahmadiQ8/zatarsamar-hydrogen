@@ -22,7 +22,7 @@ const navigation = [
   },
   {
     name: 'WhatsApp',
-    href: 'https://wa.me/96566599030',
+    href: 'https://wa.me/96565544219',
     icon: WhatsAppIcon,
   },
 ];

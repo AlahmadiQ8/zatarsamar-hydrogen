@@ -49,7 +49,7 @@ export function Header2() {
             <div className="flex-1 flex items-center justify-end">
               <div className="flex items-center">
                 <Link
-                  to={`https://wa.me/96566599030`}
+                  to={`https://wa.me/96565544219`}
                   target="_blank"
                   rel="noopener"
                   className="inline-flex items-center px-2.5 py-1.5 border border-green-700 shadow-sm text-xs font-medium rounded text-green-700 bg-white hover:bg-green-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
