@@ -52,33 +52,7 @@ function shopSitemap(data, baseUrl) {
     }
   });
 
-  const collectionsData = flattenConnection(data.collections).map(
-    (collection) => {
-      const url = collection.onlineStoreUrl
-        ? collection.onlineStoreUrl
-        : `${baseUrl}/collections/${collection.handle}`;
-
-      return {
-        url,
-        lastMod: collection.updatedAt,
-        changeFreq: 'daily',
-      };
-    },
-  );
-
-  const pagesData = flattenConnection(data.pages).map((page) => {
-    const url = page.onlineStoreUrl
-      ? page.onlineStoreUrl
-      : `${baseUrl}/pages/${page.handle}`;
-
-    return {
-      url,
-      lastMod: page.updatedAt,
-      changeFreq: 'weekly',
-    };
-  });
-
-  const urlsDatas = [...productsData, ...collectionsData, ...pagesData];
+  const urlsDatas = [...productsData];
 
   return `
     <urlset

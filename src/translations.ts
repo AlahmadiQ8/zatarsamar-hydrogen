@@ -118,5 +118,13 @@ export const translations = {
   reviewOrder: {
     value: "",
     ar: "راجع الطلب"
+  },
+  cartEmpty: {
+    value: "Cart is empty",
+    ar: "ليس لديك شيء بالسلة"
+  },
+  keepShoping: {
+    value: "Keep shopping",
+    ar: "ارجع للرئيسية"
   }
 }

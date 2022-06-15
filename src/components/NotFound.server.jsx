@@ -1,8 +1,11 @@
-import {useShop, useShopQuery, flattenConnection} from '@shopify/hydrogen';
+import {
+  useShop,
+  useShopQuery,
+  flattenConnection,
+  Link,
+} from '@shopify/hydrogen';
 import gql from 'graphql-tag';
-
 import {Layout} from './Layout.server';
-import Button from './Button.client';
 import {ProductCard} from './ProductCard';
 
 /**
@@ -19,11 +22,13 @@ function NotFoundHero() {
           We couldn’t find the page you’re looking for. Try checking the URL or
           heading back to the home page.
         </p>
-        <Button
-          className="w-full md:mx-auto md:w-96"
-          url="/"
-          label="Take me to the home page"
-        />
+        <Link
+          to="/"
+          type="button"
+          className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        >
+          Take me to the home page
+        </Link>
       </div>
     </div>
   );

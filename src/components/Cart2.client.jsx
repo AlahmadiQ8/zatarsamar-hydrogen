@@ -16,7 +16,7 @@ import {CartEmpty} from './CartEmpty';
 export function Cart2() {
   const {totalQuantity, lines, linesUpdate, status} = useCart();
 
-  if (status == 'fetching' || status == 'uninitialized') {
+  if (status == 'fetching') {
     return <LoadingFallback />;
   }
 

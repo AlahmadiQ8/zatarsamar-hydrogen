@@ -6,7 +6,6 @@ import {
   CacheHours,
 } from '@shopify/hydrogen';
 import gql from 'graphql-tag';
-
 import Header from './Header.client';
 import Footer from './Footer.server';
 import {Suspense} from 'react';
